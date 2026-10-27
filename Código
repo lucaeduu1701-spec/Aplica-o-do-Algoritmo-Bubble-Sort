@@ -1,0 +1,101 @@
+
+#include <stdio.h>
+
+#define TAM 10
+
+// Exibe os tempos dos atletas armazenados no array.
+void exibirTempos(float tempos[], int tamanho) {
+    int i;
+
+    for (i = 0; i < tamanho; i++) {
+        printf("Atleta %d: %.2f segundos\n", i + 1, tempos[i]);
+    }
+}
+
+// Implementa o algoritmo Bubble Sort.
+// crescente = 1: menor tempo para o maior.
+// crescente = 0: maior tempo para o menor.
+void bubbleSort(float tempos[], int tamanho, int crescente) {
+    int i, j;
+    float temp;
+
+    // Cada passagem posiciona um elemento em sua posição correta.
+    for (i = 0; i < tamanho - 1; i++) {
+
+        // Compara elementos que estão lado a lado.
+        for (j = 0; j < tamanho - 1 - i; j++) {
+
+            // Verifica se os elementos precisam trocar de posição.
+            if ((crescente == 1 && tempos[j] > tempos[j + 1]) ||
+                (crescente == 0 && tempos[j] < tempos[j + 1])) {
+
+                // Troca os dois elementos adjacentes.
+                temp = tempos[j];
+                tempos[j] = tempos[j + 1];
+                tempos[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int main(void) {
+    float tempos[TAM];
+    int i;
+    int criterio;
+
+    printf("====================================\n");
+    printf(" CLASSIFICACAO DE ATLETAS\n");
+    printf(" Competicao Esportiva - Bubble Sort\n");
+    printf("====================================\n");
+
+    // Solicita o critério de classificação.
+    printf("\n1 - Menor tempo primeiro (crescente)\n");
+    printf("2 - Maior tempo primeiro (decrescente)\n");
+    printf("Escolha o criterio: ");
+
+    if (scanf("%d", &criterio) != 1 ||
+        (criterio != 1 && criterio != 2)) {
+        printf("Erro: escolha 1 ou 2.\n");
+        return 1;
+    }
+
+    // Recebe os tempos dos 10 participantes.
+    printf("\nDigite o tempo de cada atleta, em segundos.\n");
+
+    for (i = 0; i < TAM; i++) {
+        printf("Tempo do atleta %d: ", i + 1);
+
+        if (scanf("%f", &tempos[i]) != 1 || tempos[i] <= 0) {
+            printf("Erro: informe um tempo numerico maior que zero.\n");
+            return 1;
+        }
+    }
+
+    // Mostra os dados antes da ordenação.
+    printf("\n--- RESULTADOS ANTES DA ORDENACAO ---\n");
+    exibirTempos(tempos, TAM);
+
+    // Executa o Bubble Sort conforme o critério escolhido.
+    bubbleSort(tempos, TAM, criterio == 1);
+
+    // Mostra os dados depois da ordenação.
+    printf("\n--- CLASSIFICACAO FINAL ---\n");
+
+    if (criterio == 1) {
+        printf("Criterio: menor tempo para o maior.\n");
+    } else {
+        printf("Criterio: maior tempo para o menor.\n");
+    }
+
+    exibirTempos(tempos, TAM);
+
+    // No modo crescente, o primeiro colocado tem o menor tempo.
+    if (criterio == 1) {
+        printf("\n1o colocado: Atleta com tempo de %.2f segundos.\n",
+               tempos[0]);
+    }
+
+    printf("\nClassificacao concluida!\n");
+
+    return 0;
+}
